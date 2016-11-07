@@ -1,0 +1,13 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".view.activity.MainActivity">
+
+    <item
+        android:id="@+id/action_list"
+        android:icon="@mipmap/ic_view_module_white_36dp"
+        android:orderInCategory="100"
+        android:title="list"
+        app:showAsAction="ifRoom" />
+
+</menu>
