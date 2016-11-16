@@ -15,15 +15,19 @@ import com.squareup.picasso.Picasso;
 
 import javax.inject.Inject;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class DetailsScreenActivity extends AppCompatActivity {
 
     private static final String IMAGE_URL = "IMAGE_URL";
 
+    @BindView(R.id.imageToBeCropped) RoundedImageView roundImageView;
+    @BindView(R.id.seekBar) SeekBar seekBar;
+    @BindView(R.id.toolbar) Toolbar toolbar;
+
     @Inject
     Picasso picasso;
-
-    private RoundedImageView roundImageView;
-    private SeekBar seekBar;
 
     private int maxRadius = 0;
 
@@ -31,18 +35,14 @@ public class DetailsScreenActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_details_screen);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        ButterKnife.bind(this);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         ((MyApplication) this.getApplication()).getComponent().inject(this);
 
         Bundle bundle = getIntent().getExtras();
-
         String imageURL = bundle.getString(IMAGE_URL);
-
-        roundImageView = (RoundedImageView) findViewById(R.id.imageToBeCropped);
-        seekBar = (SeekBar) findViewById(R.id.seekBar);
 
         picasso.load(imageURL).into(roundImageView);
 

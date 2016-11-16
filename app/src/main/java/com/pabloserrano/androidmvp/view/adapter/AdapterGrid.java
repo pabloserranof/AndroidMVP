@@ -19,6 +19,9 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class AdapterGrid extends RecyclerView.Adapter<AdapterGrid.ViewHolderGrid> {
 
     @Inject
@@ -55,21 +58,17 @@ public class AdapterGrid extends RecyclerView.Adapter<AdapterGrid.ViewHolderGrid
     }
 
     final class ViewHolderGrid extends RecyclerView.ViewHolder implements View.OnClickListener {
+        @BindView(R.id.itemTitle) TextView title;
+        @BindView(R.id.itemImageView) RoundedImageView imageView;
 
         private final Context context;
 
         private Book currentBook;
 
-        private final TextView title;
-        private final RoundedImageView imageView;
-
         public ViewHolderGrid(View view) {
             super(view);
-
+            ButterKnife.bind(this, view);
             context = view.getContext();
-
-            title = (TextView) view.findViewById(R.id.itemTitle);
-            imageView = (RoundedImageView) view.findViewById(R.id.itemImageView);
 
             view.setOnClickListener(this);
         }

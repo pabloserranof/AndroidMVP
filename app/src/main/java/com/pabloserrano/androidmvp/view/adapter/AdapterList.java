@@ -19,6 +19,9 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class AdapterList extends RecyclerView.Adapter<AdapterList.ViewHolderList> {
 
     @Inject
@@ -54,29 +57,23 @@ public class AdapterList extends RecyclerView.Adapter<AdapterList.ViewHolderList
     }
 
     final class ViewHolderList extends RecyclerView.ViewHolder implements View.OnClickListener {
+        @BindView(R.id.itemTitle) TextView title;
+        @BindView(R.id.itemDescription) TextView description;
+        @BindView(R.id.itemImageView) RoundedImageView imageView;
 
         private final Context context;
 
         private Book currentBook;
 
-        private final TextView title;
-        private final TextView description;
-        private final RoundedImageView imageView;
-
         public ViewHolderList(View view) {
             super(view);
-
+            ButterKnife.bind(this, view);
             context = view.getContext();
-
-            title = (TextView) view.findViewById(R.id.itemTitle);
-            description = (TextView) view.findViewById(R.id.itemDescription);
-            imageView = (RoundedImageView) view.findViewById(R.id.itemImageView);
 
             view.setOnClickListener(this);
         }
 
         public void render(Book book) {
-
             currentBook = book;
             if (currentBook != null) {
                 title.setText(currentBook.getTitle());

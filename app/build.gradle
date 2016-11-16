@@ -33,6 +33,7 @@ ext {
     retrofitVersion = '2.1.0'
     daggerVersion = '2.2'
     timberVersion = '4.1.2'
+    butterknifeVersion = '8.0.1'
     gsonVersion = '2.6.1'
     picassoVersion = '2.5.2'
     okhttpVersion = '3.4.2'
@@ -108,6 +109,10 @@ dependencies {
 
     // Logging
     compile "com.jakewharton.timber:timber:$timberVersion"
+
+    // ButterKnife
+    compile "com.jakewharton:butterknife:$butterknifeVersion"
+    apt "com.jakewharton:butterknife-compiler:$butterknifeVersion"
 
     // RoundImageView
     compile "com.makeramen:roundedimageview:$roundImageViewVersion"
