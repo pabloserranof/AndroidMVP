@@ -1,5 +1,6 @@
 package com.pabloserrano.androidmvp.view.adapter;
 
+import android.app.Activity;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -8,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.makeramen.roundedimageview.RoundedImageView;
+import com.pabloserrano.androidmvp.MyApplication;
 import com.pabloserrano.androidmvp.R;
 import com.pabloserrano.androidmvp.model.Book;
 import com.pabloserrano.androidmvp.view.activity.DetailsScreenActivity;
@@ -17,19 +19,22 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-
 public class AdapterGrid extends RecyclerView.Adapter<AdapterGrid.ViewHolderGrid> {
+
+    @Inject
+    Picasso picasso;
 
     private final List<Book> listBooks;
 
-    public AdapterGrid(List<Book> listItems) {
+    public AdapterGrid(Activity context, List<Book> listItems) {
+
+        ((MyApplication) context.getApplication()).getComponent().inject(this);
         this.listBooks = listItems;
     }
 
     @Override
     public ViewHolderGrid onCreateViewHolder(ViewGroup parent,
                                              int viewType) {
-
         View v = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.item_recycler_grid, parent, false);
 
@@ -49,10 +54,7 @@ public class AdapterGrid extends RecyclerView.Adapter<AdapterGrid.ViewHolderGrid
         return listBooks.size();
     }
 
-    static class ViewHolderGrid extends RecyclerView.ViewHolder implements View.OnClickListener {
-
-        @Inject
-        Picasso picasso;
+    final class ViewHolderGrid extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         private final Context context;
 
@@ -73,11 +75,10 @@ public class AdapterGrid extends RecyclerView.Adapter<AdapterGrid.ViewHolderGrid
         }
 
         public void render(Book book) {
-
             currentBook = book;
             if (currentBook != null) {
                 title.setText(currentBook.getTitle());
-                picasso.with(context).load(currentBook.getImageURL()).into(imageView);
+                picasso.load(currentBook.getImageURL()).resizeDimen(R.dimen.book_image_width, R.dimen.book_image_height).into(imageView);
             }
         }
 

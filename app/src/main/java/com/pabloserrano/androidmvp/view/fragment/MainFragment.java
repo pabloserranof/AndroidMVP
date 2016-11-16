@@ -38,12 +38,14 @@ public class MainFragment extends Fragment implements MainView {
 
     private static final int SPAN_COUNT = 2;
 
-    protected LayoutManagerType currentLayoutManagerType;
+    private LayoutManagerType currentLayoutManagerType;
 
     private List<Book> listBooks;
 
     private RecyclerView recyclerView;
-    private RecyclerView.Adapter adapter;
+    private RecyclerView.Adapter currentAdapter;
+    private RecyclerView.Adapter gridAdapter;
+    private RecyclerView.Adapter listAdapter;
     private RecyclerView.LayoutManager layoutManager;
 
     public MainFragment() {
@@ -79,7 +81,7 @@ public class MainFragment extends Fragment implements MainView {
         return fragmentView;
     }
 
-    public void setRecyclerViewLayoutManager() {
+    private void setRecyclerViewLayoutManager() {
 
         int scrollPosition = 0;
         if (recyclerView.getLayoutManager() != null) {
@@ -91,12 +93,18 @@ public class MainFragment extends Fragment implements MainView {
             case GRID_LAYOUT_MANAGER:
                 layoutManager = new GridLayoutManager(getActivity(), SPAN_COUNT);
                 currentLayoutManagerType = GRID_LAYOUT_MANAGER;
-                adapter = new AdapterGrid(listBooks);
+                if (gridAdapter == null) {
+                    gridAdapter = new AdapterGrid(getActivity(), listBooks);
+                }
+                currentAdapter = gridAdapter;
                 break;
             case LINEAR_LAYOUT_MANAGER:
                 layoutManager = new LinearLayoutManager(getActivity());
                 currentLayoutManagerType = LINEAR_LAYOUT_MANAGER;
-                adapter = new AdapterList(listBooks);
+                if (listAdapter == null) {
+                    listAdapter = new AdapterList(getActivity(), listBooks);
+                }
+                currentAdapter = listAdapter;
                 break;
             default:
                 layoutManager = new LinearLayoutManager(getActivity());
@@ -104,15 +112,15 @@ public class MainFragment extends Fragment implements MainView {
         }
 
         recyclerView.setLayoutManager(layoutManager);
-        recyclerView.setAdapter(adapter);
+        recyclerView.setAdapter(currentAdapter);
         recyclerView.scrollToPosition(scrollPosition);
     }
 
     @Override
     public void loadBooks(List<Book> listBooks) {
         this.listBooks = listBooks;
-        adapter = new AdapterList(listBooks);
-        recyclerView.setAdapter(adapter);
+        currentAdapter = new AdapterList(getActivity(), listBooks);
+        recyclerView.setAdapter(currentAdapter);
     }
 
     @Override

@@ -1,5 +1,6 @@
 package com.pabloserrano.androidmvp.view.adapter;
 
+import android.app.Activity;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -8,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.makeramen.roundedimageview.RoundedImageView;
+import com.pabloserrano.androidmvp.MyApplication;
 import com.pabloserrano.androidmvp.R;
 import com.pabloserrano.androidmvp.model.Book;
 import com.pabloserrano.androidmvp.view.activity.DetailsScreenActivity;
@@ -19,16 +21,19 @@ import javax.inject.Inject;
 
 public class AdapterList extends RecyclerView.Adapter<AdapterList.ViewHolderList> {
 
+    @Inject
+    Picasso picasso;
+
     private final List<Book> listBooks;
 
-    public AdapterList(List<Book> listItems) {
+    public AdapterList(Activity context, List<Book> listItems) {
+        ((MyApplication) context.getApplication()).getComponent().inject(this);
         this.listBooks = listItems;
     }
 
     @Override
     public ViewHolderList onCreateViewHolder(ViewGroup parent,
                                              int viewType) {
-
         View v = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.item_recycler_list, parent, false);
 
@@ -48,10 +53,7 @@ public class AdapterList extends RecyclerView.Adapter<AdapterList.ViewHolderList
         return listBooks.size();
     }
 
-    static class ViewHolderList extends RecyclerView.ViewHolder implements View.OnClickListener {
-
-        @Inject
-        Picasso picasso;
+    final class ViewHolderList extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         private final Context context;
 
@@ -79,13 +81,12 @@ public class AdapterList extends RecyclerView.Adapter<AdapterList.ViewHolderList
             if (currentBook != null) {
                 title.setText(currentBook.getTitle());
                 description.setText(currentBook.getDescription());
-                picasso.with(context).load(currentBook.getImageURL()).into(imageView);
+                picasso.load(currentBook.getImageURL()).resizeDimen(R.dimen.book_image_width, R.dimen.book_image_height).into(imageView);
             }
         }
 
         @Override
         public void onClick(View view) {
-
             DetailsScreenActivity.startActivity(context, currentBook.getImageURL());
         }
     }

@@ -9,6 +9,7 @@ import android.view.ViewTreeObserver;
 import android.widget.SeekBar;
 
 import com.makeramen.roundedimageview.RoundedImageView;
+import com.pabloserrano.androidmvp.MyApplication;
 import com.pabloserrano.androidmvp.R;
 import com.squareup.picasso.Picasso;
 
@@ -32,8 +33,10 @@ public class DetailsScreenActivity extends AppCompatActivity {
         setContentView(R.layout.activity_details_screen);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        ((MyApplication) this.getApplication()).getComponent().inject(this);
+
         Bundle bundle = getIntent().getExtras();
 
         String imageURL = bundle.getString(IMAGE_URL);
@@ -41,7 +44,7 @@ public class DetailsScreenActivity extends AppCompatActivity {
         roundImageView = (RoundedImageView) findViewById(R.id.imageToBeCropped);
         seekBar = (SeekBar) findViewById(R.id.seekBar);
 
-        picasso.with(this).load(imageURL).into(roundImageView);
+        picasso.load(imageURL).into(roundImageView);
 
         ViewTreeObserver viewTreeObserver = roundImageView.getViewTreeObserver();
         if (viewTreeObserver.isAlive()) {
